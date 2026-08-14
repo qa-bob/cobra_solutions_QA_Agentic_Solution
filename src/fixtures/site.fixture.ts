@@ -10,10 +10,11 @@
  */
 
 import { test as base, expect } from '@playwright/test';
-import { loadSiteConfig, type SiteConfig } from '@types/site-config.types';
+import { loadSiteConfig, type SiteConfig } from '@site-types/site-config.types';
 import { HomePage } from '@pages/home.page';
 import { NavigationPage } from '@pages/navigation.page';
 import { ContactFormPage } from '@pages/contact.page';
+import { ProductsPage } from '@pages/products.page';
 
 // ── Fixture type definitions ─────────────────────────────────────────────────
 
@@ -26,6 +27,8 @@ export interface Fixtures {
   navigationPage: NavigationPage;
   /** ContactFormPage page object (does not auto-navigate) */
   contactPage: ContactFormPage;
+  /** ProductsPage page object (does not auto-navigate — call productsPage.navigate()) */
+  productsPage: ProductsPage;
 }
 
 // ── Extended test object ─────────────────────────────────────────────────────
@@ -66,6 +69,15 @@ export const test = base.extend<Fixtures>({
   contactPage: async ({ page, siteConfig }, use) => {
     const contactPage = new ContactFormPage(page, siteConfig);
     await use(contactPage);
+  },
+
+  /**
+   * productsPage — constructs ProductsPage without navigating.
+   * Call productsPage.navigate() in beforeEach to load /software/default.aspx.
+   */
+  productsPage: async ({ page, siteConfig }, use) => {
+    const productsPage = new ProductsPage(page, siteConfig);
+    await use(productsPage);
   },
 });
 
