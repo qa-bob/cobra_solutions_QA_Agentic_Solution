@@ -101,7 +101,9 @@ test.describe('COBRA Solutions Software Products Page @functional', () => {
 
   // ── Navigation still works on products page ───────────────────────────────────
 
-  test('main navigation is present on products page @functional @navigation', async ({ page }) => {
+  test('main navigation is present on products page @functional @navigation', async ({ page }, testInfo) => {
+    // Small viewports usually hide the nav behind a toggle — covered by the mobile nav test
+    test.skip(testInfo.project.name !== 'chromium-desktop', 'Runs only in the "chromium-desktop" project');
     const homeLink = page.getByRole('link', { name: /^home$/i }).first();
     await expect(homeLink, 'Home nav link should be visible on products page').toBeVisible();
   });
