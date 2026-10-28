@@ -26,7 +26,9 @@ test.describe('COBRA Solutions Homepage @functional', () => {
 
   // ── Navigation ───────────────────────────────────────────────────────────────
 
-  test('primary navigation includes all expected items @functional @navigation', async ({ page }) => {
+  test('primary navigation includes all expected items @functional @navigation', async ({ page }, testInfo) => {
+    // Small viewports usually hide the nav behind a toggle — covered by the mobile nav test
+    test.skip(testInfo.project.name !== 'chromium-desktop', 'Runs only in the "chromium-desktop" project');
     const expectedItems = ['Home', 'Software Products', 'Purchase', 'Support', 'Contact'];
     for (const item of expectedItems) {
       const link = page.getByRole('link', { name: new RegExp(`^${item}$`, 'i') }).first();
